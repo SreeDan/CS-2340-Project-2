@@ -19,8 +19,12 @@
             android:theme="@style/Theme.Spotify2340.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Adjust these to match your Redirect URI -->
+                <data android:scheme="Spotify2340" android:host="auth" />
             </intent-filter>
         </activity>
     </application>

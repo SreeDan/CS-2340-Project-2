@@ -24,10 +24,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "ffb6d0b9973d4ca9bb946f66370fe166";
-    public static final String REDIRECT_URI = "Spotify2340://auth";
+    public static final String REDIRECT_URI = "com.example.spotify2340://auth";
 
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     public static final int AUTH_CODE_REQUEST_CODE = 1;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void getToken() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
-        Log.i("getToken()", "Request recieved");
+        Log.i("getToken()", request.toString());
         AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
         Log.i("getToken()", "openLoginActivity done");
         Log.i("getToken()", MainActivity.this.toString());
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email", " user-read-private" }) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-read-email", "user-read-private" }) // <--- Change the scope of your requested token here
                 .setCampaign("your-campaign-token")
                 .build();
     }
@@ -188,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
      * @return redirect Uri object
      */
     private Uri getRedirectUri() {
-        Log.i("getRedirectUri", Uri.parse(REDIRECT_URI).toString());
         return Uri.parse(REDIRECT_URI);
     }
 

@@ -18,6 +18,9 @@ public interface UserDao {
     @Query("SELECT * FROM user WHERE username like :username")
     List<User> findByUsername(String username);
 
+    @Query("SELECT * FROM user WHERE logged_in = 1")
+    User getCurrUser();
+
     @Insert
     void insert(User... users);
 

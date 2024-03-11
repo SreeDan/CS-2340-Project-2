@@ -18,4 +18,6 @@ public class User {
     @ColumnInfo(name = "password")
     public String password;
 
+    @ColumnInfo(name = "logged_in")
+    public boolean loggedIn;
 }

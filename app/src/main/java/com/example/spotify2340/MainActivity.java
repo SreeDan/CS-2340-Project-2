@@ -20,14 +20,16 @@ import com.example.spotify2340.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    AppDatabase db = Room.databaseBuilder(getApplicationContext(),
-            AppDatabase.class, "database.db").build();
+    AppDatabase db;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "database.db").build();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

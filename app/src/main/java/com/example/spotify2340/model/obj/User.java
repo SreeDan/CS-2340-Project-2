@@ -10,12 +10,12 @@ import java.util.UUID;
 public class User {
 
     @PrimaryKey
-    public UUID id;
+    public long id;
 
     @ColumnInfo(name = "username")
     public String username;
 
     @ColumnInfo(name = "password")
-    private String password;
+    public String password;
 
 }

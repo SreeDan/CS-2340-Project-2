@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private String mAccessToken, mAccessCode;
     private Call mCall;
 
-    private TextView tokenTextView, codeTextView, profileTextView;
+    private TextView tokenTextView, codeTextView, profileTextView, playlistTextView;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
         // Initialize the views
         tokenTextView = (TextView) findViewById(R.id.token_text_view);
         codeTextView = (TextView) findViewById(R.id.code_text_view);
-        profileTextView = (TextView) findViewById(R.id.response_text_view);
+        profileTextView = (TextView) findViewById(R.id.profile_text_view);
+        playlistTextView = findViewById(R.id.playlist_text_view);
 
         // Initialize the buttons
         Button tokenBtn = (Button) findViewById(R.id.token_btn);
         Button codeBtn = (Button) findViewById(R.id.code_btn);
         Button profileBtn = (Button) findViewById(R.id.profile_btn);
+        Button playlistBtn = findViewById(R.id.playlist_btn);
 
         // Set the click listeners for the buttons
 
@@ -66,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         profileBtn.setOnClickListener((v) -> {
             onGetUserProfileClicked();
+        });
+
+        playlistBtn.setOnClickListener((v) -> {
+            onGetUserPlaylistClicked();
         });
 
     }
@@ -140,6 +147,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    final JSONObject jsonObject = new JSONObject(response.body().string());
+                    setTextAsync(jsonObject.toString(3), profileTextView);
+                    userId = jsonObject.getString("id");
+                } catch (JSONException e) {
+                    Log.d("JSON", "Failed to parse data: " + e);
+                    runOnUiThread(() -> {
+                        Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
+        });
+    }
+
+    public void onGetUserPlaylistClicked() {
+        if (mAccessToken == null) {
+            Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (userId == null) {
+            Toast.makeText(this, "You need to collect the userID first!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Create a request to get the user profile
+        final Request request = new Request.Builder()
+                .url("https://api.spotify.com/v1/users/" + userId + "/playlists")
+                .addHeader("Authorization", "Bearer " + mAccessToken)
+                .build();
+
+        cancelCall();
+        mCall = mOkHttpClient.newCall(request);
+
+        mCall.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.d("HTTP", "Failed to fetch data: " + e);
                 Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
                         Toast.LENGTH_SHORT).show();
             }
@@ -148,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
-                    setTextAsync(jsonObject.toString(3), profileTextView);
+                    setTextAsync(jsonObject.toString(3), playlistTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
@@ -178,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email", "user-read-private" }) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-read-email", "user-read-private", "user-follow-read", "playlist-read-private"}) // <--- Change the scope of your requested token here
                 .setCampaign("your-campaign-token")
                 .build();
     }

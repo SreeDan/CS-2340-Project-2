@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!--        Spotify UnWrapped Colors-->
+    <color name="spotify_black">#191414</color>
+    <color name="spotify_green">#1DB954</color>
+    <color name="black_background">#130F0F</color>
 </resources>

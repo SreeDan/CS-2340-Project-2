@@ -1,4 +1,4 @@
-package com.example.spotify2340;
+package com.example.spotify2340.ui.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.spotify2340.MainActivity;
+import com.example.spotify2340.R;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -45,36 +47,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize the views
-        tokenTextView = (TextView) findViewById(R.id.token_text_view);
-        codeTextView = (TextView) findViewById(R.id.code_text_view);
-        profileTextView = (TextView) findViewById(R.id.profile_text_view);
-        playlistTextView = findViewById(R.id.playlist_text_view);
 
         // Initialize the buttons
-        Button tokenBtn = (Button) findViewById(R.id.token_btn);
-        Button codeBtn = (Button) findViewById(R.id.code_btn);
-        Button profileBtn = (Button) findViewById(R.id.profile_btn);
-        Button playlistBtn = findViewById(R.id.playlist_btn);
+        Button tokenBtn = (Button) findViewById(R.id.connect_spotify_button);
 
         // Set the click listeners for the buttons
-
         tokenBtn.setOnClickListener((v) -> {
             getToken();
         });
-
-        codeBtn.setOnClickListener((v) -> {
-            getCode();
-        });
-
-        profileBtn.setOnClickListener((v) -> {
-            onGetUserProfileClicked();
-        });
-
-        playlistBtn.setOnClickListener((v) -> {
-            onGetUserPlaylistClicked();
-        });
-
     }
 
     /**
@@ -86,9 +66,9 @@ public class LoginActivity extends AppCompatActivity {
     public void getToken() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
         Log.i("getToken()", request.toString());
-        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(LoginActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
         Log.i("getToken()", "openLoginActivity done");
-        Log.i("getToken()", MainActivity.this.toString());
+        Log.i("getToken()", LoginActivity.this.toString());
     }
 
     /**
@@ -99,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void getCode() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(MainActivity.this, AUTH_CODE_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(LoginActivity.this, AUTH_CODE_REQUEST_CODE, request);
     }
 
 
@@ -116,11 +96,9 @@ public class LoginActivity extends AppCompatActivity {
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
             mAccessToken = response.getAccessToken();
-            setTextAsync(mAccessToken, tokenTextView);
-
+            Log.i("Access Token:", mAccessToken.toString());
         } else if (AUTH_CODE_REQUEST_CODE == requestCode) {
             mAccessCode = response.getCode();
-            setTextAsync(mAccessCode, codeTextView);
         }
     }
 
@@ -148,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
                 runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Failed to fetch data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -161,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     runOnUiThread(() -> {
-                        Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Failed to parse data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
                     });
                 }
             }
@@ -192,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                Toast.makeText(MainActivity.this, "Failed to fetch data, watch Logcat for more details",
+                Toast.makeText(LoginActivity.this, "Failed to fetch data, watch Logcat for more details",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -203,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                     setTextAsync(jsonObject.toString(3), playlistTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
+                    Toast.makeText(LoginActivity.this, "Failed to parse data, watch Logcat for more details",
                             Toast.LENGTH_SHORT).show();
                 }
             }

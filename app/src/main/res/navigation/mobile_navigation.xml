@@ -22,4 +22,11 @@
         android:name="com.example.spotify2340.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_delete"
+        android:name="com.example.spotify2340.ui.delete.DeleteUserFragment"
+        android:label="@string/menu_delete"
+        tools:layout="@layout/fragment_delete_user"
+     />
 </navigation>

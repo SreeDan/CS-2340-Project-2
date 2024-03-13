@@ -60,5 +60,5 @@ dependencies {
     implementation("androidx.room:room-guava:$room_version")
     testImplementation("androidx.room:room-testing:$room_version")
     implementation("androidx.room:room-paging:$room_version")
-    implementation("'se.michaelthelin.spotify:spotify-web-api-java:8.3.6'")
+//    implementation("'se.michaelthelin.spotify:spotify-web-api-java:8.3.6'")
 }

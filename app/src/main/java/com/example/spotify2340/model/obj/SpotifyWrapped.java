@@ -1,5 +1,6 @@
 //package com.example.spotify2340.model.obj;
 //
+//import
 //public class SpotifyWrapped {
 //    //add this to gradle implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.3.6'
 //

@@ -1,4 +1,4 @@
-package com.example.spotify2340.ui.login;
+package com.example.spotify2340.ui.spotifyauth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.spotify2340.MainActivity;
 import com.example.spotify2340.R;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
@@ -27,7 +26,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class LoginActivity extends AppCompatActivity {
+public class SpotifyAuthActivity extends AppCompatActivity {
 
     public static final String CLIENT_ID = "ffb6d0b9973d4ca9bb946f66370fe166";
     public static final String REDIRECT_URI = "com.example.spotify2340://auth";
@@ -45,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_spotifyauth);
 
 
         // Initialize the buttons
@@ -66,9 +65,9 @@ public class LoginActivity extends AppCompatActivity {
     public void getToken() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.TOKEN);
         Log.i("getToken()", request.toString());
-        AuthorizationClient.openLoginActivity(LoginActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(SpotifyAuthActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
         Log.i("getToken()", "openLoginActivity done");
-        Log.i("getToken()", LoginActivity.this.toString());
+        Log.i("getToken()", SpotifyAuthActivity.this.toString());
     }
 
     /**
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void getCode() {
         final AuthorizationRequest request = getAuthenticationRequest(AuthorizationResponse.Type.CODE);
-        AuthorizationClient.openLoginActivity(LoginActivity.this, AUTH_CODE_REQUEST_CODE, request);
+        AuthorizationClient.openLoginActivity(SpotifyAuthActivity.this, AUTH_CODE_REQUEST_CODE, request);
     }
 
 
@@ -126,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
                 runOnUiThread(() -> {
-                    Toast.makeText(LoginActivity.this, "Failed to fetch data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SpotifyAuthActivity.this, "Failed to fetch data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
                 });
             }
 
@@ -139,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     runOnUiThread(() -> {
-                        Toast.makeText(LoginActivity.this, "Failed to parse data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SpotifyAuthActivity.this, "Failed to parse data, watch Logcat for more details", Toast.LENGTH_SHORT).show();
                     });
                 }
             }
@@ -170,7 +169,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call call, IOException e) {
                 Log.d("HTTP", "Failed to fetch data: " + e);
-                Toast.makeText(LoginActivity.this, "Failed to fetch data, watch Logcat for more details",
+                Toast.makeText(SpotifyAuthActivity.this, "Failed to fetch data, watch Logcat for more details",
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -181,7 +180,7 @@ public class LoginActivity extends AppCompatActivity {
                     setTextAsync(jsonObject.toString(3), playlistTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
-                    Toast.makeText(LoginActivity.this, "Failed to parse data, watch Logcat for more details",
+                    Toast.makeText(SpotifyAuthActivity.this, "Failed to parse data, watch Logcat for more details",
                             Toast.LENGTH_SHORT).show();
                 }
             }

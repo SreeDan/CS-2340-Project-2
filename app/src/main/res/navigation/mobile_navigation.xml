@@ -7,7 +7,7 @@
 
     <activity
         android:id="@+id/nav_login"
-        android:name="com.example.spotify2340.ui.login.LoginActivity"
+        android:name="com.example.spotify2340.ui.spotifyauth.SpotifyAuthActivity"
         android:label="Login"/>
 
     <fragment

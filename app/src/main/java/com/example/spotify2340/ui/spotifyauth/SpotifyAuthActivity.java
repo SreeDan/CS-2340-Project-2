@@ -48,7 +48,7 @@ public class SpotifyAuthActivity extends AppCompatActivity {
 
 
         // Initialize the buttons
-        Button tokenBtn = (Button) findViewById(R.id.connect_spotify_button);
+        Button tokenBtn = (Button) findViewById(R.id.connect_spotify_button_spotifyauth);
 
         // Set the click listeners for the buttons
         tokenBtn.setOnClickListener((v) -> {

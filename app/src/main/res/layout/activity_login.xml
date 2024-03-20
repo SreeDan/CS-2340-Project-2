@@ -8,48 +8,45 @@
     tools:context=".ui.LoginActivity"
     android:background="@color/black">
 
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
-        android:src="@drawable/image_login"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-5dp" />
+        android:layout_height="match_parent"
+        android:background="@drawable/image_login" />
 
     <TextView
         android:id="@+id/app_name_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="350dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/name"
         android:textColor="@color/white"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        android:textSize="35sp"
+        app:layout_constraintBottom_toTopOf="@+id/app_slogan_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.93" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/app_name_slogan"
+        android:id="@+id/app_slogan_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
         android:fontFamily="sans-serif-light"
         android:text="@string/slogan"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/signin_button_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_name_login"
-        app:layout_constraintVertical_bias="0.051" />
+        app:layout_constraintTop_toBottomOf="@+id/app_name_login" />
 
     <Button
         android:id="@+id/signin_button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:background="@color/spotify_green"
         android:text="Sign Up"
         android:textColor="@color/white"
@@ -58,13 +55,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_name_slogan" />
+        app:layout_constraintTop_toBottomOf="@+id/app_slogan_login" />
 
     <TextView
         android:id="@+id/login_button_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:text="Log in"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,8 +1,10 @@
-package com.example.spotify2340;
+package com.example.spotify2340.ui.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.spotify2340.R;
 
 public class LoginPageActivity extends AppCompatActivity {
 

@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_login">
+    app:startDestination="@+id/nav_login_page">
 
     <activity
-        android:id="@+id/nav_login"
-        android:name="com.example.spotify2340.LoginPageActivity"
-        android:label="Login" />
+        android:id="@+id/nav_login_page"
+        android:name="com.example.spotify2340.ui.login.LoginPageActivity"
+        android:label="Login Page" />
+
+    <activity
+        android:id="@+id/nav_create_new_account"
+        android:name="com.example.spotify2340.ui.login.CreateNewAccountActivity"
+        android:label="Create New Account"/>
 
     <fragment
         android:id="@+id/nav_account"

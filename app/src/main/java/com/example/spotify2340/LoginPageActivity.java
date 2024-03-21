@@ -2,12 +2,9 @@ package com.example.spotify2340;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.spotify2340.ui.home.AccountFragment;
-
-public class LoginActivity extends AppCompatActivity {
+public class LoginPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

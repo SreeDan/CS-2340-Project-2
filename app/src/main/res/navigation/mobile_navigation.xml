@@ -7,8 +7,8 @@
 
     <activity
         android:id="@+id/nav_login"
-        android:name="com.example.spotify2340.LoginActivity"
-        android:label="Login"/>
+        android:name="com.example.spotify2340.LoginPageActivity"
+        android:label="Login" />
 
     <fragment
         android:id="@+id/nav_account"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     app:circularflow_radiusInDP="30"
-    tools:context=".ui.LoginActivity">
+    tools:context=".ui.LoginPageActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -47,7 +47,7 @@
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="Unwrap your music."
-            android:textColor="@color/white"
+            android:textColor="@color/whiter"
             android:textSize="36sp"
             app:layout_constraintBottom_toTopOf="@+id/app_sloganpart2_login"
             app:layout_constraintEnd_toEndOf="parent"
@@ -62,7 +62,7 @@
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="Discover more."
-            android:textColor="@color/white"
+            android:textColor="@color/whiter"
             android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

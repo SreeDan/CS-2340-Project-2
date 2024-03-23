@@ -19,11 +19,10 @@
             android:name=".ui.login.LoginPageActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.spotifyauth.SpotifyAuthActivity"
-            android:exported="true" >
+            android:name=".ui.spotifyauth.ConnectToSpotifyActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -130,10 +130,17 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    Log.i("ConnectToSpotifyActivity - User Profile: ", "User Profile Response: " + response.body().string());
+                    /**
+                     You can only read the response once before it disappears
+                     If you try to read it again -> OkHttp Dipatcher IllegalStateException:closed occurs
+                     Thus, I save it in a variable to prevent issues.
+                     **/
+
+                    String responseBody = response.body().string();
+                    Log.i("User Profile: ", "User Profile: " + responseBody);
+                    final JSONObject jsonObject = new JSONObject(responseBody);
                     userId = jsonObject.getString("id");
-//                    onGetUserPlaylistClicked();
+                    onGetUserPlaylistClicked();
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     runOnUiThread(() -> {
@@ -175,9 +182,9 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    final JSONObject jsonObject = new JSONObject(response.body().string());
-                    Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + response.body().string());
-
+                    String responseBody = response.body().string();
+                    final JSONObject jsonObject = new JSONObject(responseBody);
+                    Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + responseBody);
                     Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);

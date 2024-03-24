@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.spotify2340.MainActivity;
 import com.example.spotify2340.R;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
@@ -43,8 +44,6 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spotifyauth);
-
         //Retrieve Token
         getToken();
     }
@@ -87,10 +86,15 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
 
         // Check which request code is present (if any)
         if (AUTH_TOKEN_REQUEST_CODE == requestCode) {
+            if (response.getAccessToken() == null) {
+                Log.i("Access Token: ", "Access Token is null.");
+            }
             mAccessToken = response.getAccessToken();
-            Log.i("Access Token:", mAccessToken.toString());
+            Log.i("Access Token:", "Access Token: " + mAccessToken.toString());
+            onGetUserProfileClicked();
         }
-//        else if (AUTH_CODE_REQUEST_CODE == requestCode) {
+
+        //        else if (AUTH_CODE_REQUEST_CODE == requestCode) {
 //            mAccessCode = response.getCode();
 //        }
     }
@@ -127,8 +131,9 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
-                    Log.i("ConnectToSpotifyActivity - User Profile: ", response.toString());
+                    Log.i("ConnectToSpotifyActivity - User Profile: ", "User Profile Response: " + response.body().string());
                     userId = jsonObject.getString("id");
+//                    onGetUserPlaylistClicked();
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     runOnUiThread(() -> {
@@ -171,7 +176,12 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
-                    Log.i("ConnectToSpotifyActivity - User Profile: ", response.toString());
+                    Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + response.body().string());
+
+                    Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish(); // Finish the current activity
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(ConnectToSpotifyActivity.this, "Failed to parse data, watch Logcat for more details",

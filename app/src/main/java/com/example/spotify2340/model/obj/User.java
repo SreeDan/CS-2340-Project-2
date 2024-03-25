@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 public class User {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public long id;
 
     @ColumnInfo(name = "username")
@@ -39,6 +39,7 @@ public class User {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
     @Ignore
     public boolean getLoggedIn(User user) {
         return user.loggedIn;

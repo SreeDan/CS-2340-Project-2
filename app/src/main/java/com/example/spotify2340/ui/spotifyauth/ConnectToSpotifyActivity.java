@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.spotify2340.MainActivity;
 import com.example.spotify2340.R;
+import com.example.spotify2340.ui.home.AccountFragment;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -185,10 +186,13 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
                     String responseBody = response.body().string();
                     final JSONObject jsonObject = new JSONObject(responseBody);
                     Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + responseBody);
+
+                    //Redirecting to MainActivity which redirects to AccountFragment
                     Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish(); // Finish the current activity
+
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(ConnectToSpotifyActivity.this, "Failed to parse data, watch Logcat for more details",
@@ -196,17 +200,6 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    /**
-     * Creates a UI thread to update a TextView in the background
-     * Reduces UI latency and makes the system perform more consistently
-     *
-     * @param text the text to set
-     * @param textView TextView object to update
-     */
-    private void setTextAsync(final String text, TextView textView) {
-        runOnUiThread(() -> textView.setText(text));
     }
 
     /**

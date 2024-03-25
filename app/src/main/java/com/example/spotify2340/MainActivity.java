@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.Menu;
 
 import com.example.spotify2340.model.AppDatabase;
+import com.example.spotify2340.ui.home.AccountFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -19,7 +20,6 @@ import androidx.room.Room;
 import com.example.spotify2340.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
     AppDatabase db;
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;

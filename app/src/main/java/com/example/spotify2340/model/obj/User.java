@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 public class User {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public long id;
 
     @ColumnInfo(name = "username")
@@ -25,24 +25,21 @@ public class User {
     @Ignore
     public User() {
 
+    }
 
+    @Ignore
+    public User(String username, String password, boolean loggedIn) {
+        this.username = username;
+        this.password = password;
+        this.loggedIn = loggedIn;
     }
 
     public User(long id, String username, String password, boolean loggedIn) {
-        //not sure what to do about id
+        this.id = id;
         this.username = username;
         this.password = password;
         this.loggedIn = false;
 
     }
-    @Ignore
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-    @Ignore
-    public boolean getLoggedIn(User user) {
-        return user.loggedIn;
-    }
-
 
 }

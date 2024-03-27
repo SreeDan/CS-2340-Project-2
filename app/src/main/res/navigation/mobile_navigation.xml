@@ -5,6 +5,11 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_login_page">
 
+<!--    <activity-->
+<!--        android:id="@+id/main_activity"-->
+<!--        android:name="com.example.spotify2340.MainActivity"-->
+<!--        android_label="Main Activity"/>-->
+
     <activity
         android:id="@+id/nav_connect_to_spotify"
         android:name="com.example.spotify2340.ui.spotifyauth.ConnectToSpotifyActivity"

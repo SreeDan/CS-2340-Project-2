@@ -47,6 +47,11 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //Retrieve Token
         getToken();
+        //Redirecting to MainActivity which redirects to AccountFragment
+        Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Finish the current activity
     }
 
     /**
@@ -186,12 +191,6 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
                     String responseBody = response.body().string();
                     final JSONObject jsonObject = new JSONObject(responseBody);
                     Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + responseBody);
-
-                    //Redirecting to MainActivity which redirects to AccountFragment
-                    Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish(); // Finish the current activity
 
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);

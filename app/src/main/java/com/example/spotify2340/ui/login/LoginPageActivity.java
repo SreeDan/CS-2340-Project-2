@@ -4,10 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Slide;
-import android.transition.TransitionManager;
-import android.view.Gravity;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.spotify2340.R;
@@ -21,7 +17,7 @@ public class LoginPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_page);
 
         //Initializing buttons
         createNewAccountButton = findViewById(R.id.signup_button_login);

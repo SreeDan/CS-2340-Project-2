@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.spotify2340.MainActivity;
 import com.example.spotify2340.R;
 import com.example.spotify2340.ui.home.AccountFragment;
+import android.content.SharedPreferences;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
@@ -28,7 +29,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class ConnectToSpotifyActivity extends AppCompatActivity {
+public class ConnectToSpotifyActivity extends AppCompatActivity implements SpotifyActionListener {
 
     public static final String CLIENT_ID = "ffb6d0b9973d4ca9bb946f66370fe166";
     public static final String REDIRECT_URI = "com.example.spotify2340://auth";
@@ -41,17 +42,19 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
     private String mAccessToken;
     private Call mCall;
     private String userId;
+    String userProfileResponse, userPlaylistResponse;
+    String InvalidAccessToken = "User Profile: {\n" +
+            "\"error\": {\n" +
+            "\"status\": 401,\n" +
+            "\"message\": \"Invalid access token\"\n" +
+            "}\n" +
+            "}";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Retrieve Token
         getToken();
-        //Redirecting to MainActivity which redirects to AccountFragment
-        Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish(); // Finish the current activity
     }
 
     /**
@@ -66,6 +69,7 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
         AuthorizationClient.openLoginActivity(ConnectToSpotifyActivity.this, AUTH_TOKEN_REQUEST_CODE, request);
         Log.i("getToken()", "openLoginActivity done");
         Log.i("getToken()", ConnectToSpotifyActivity.this.toString());
+        getUserProfile();
     }
 
 //    /**
@@ -97,7 +101,6 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
             }
             mAccessToken = response.getAccessToken();
             Log.i("Access Token:", "Access Token: " + mAccessToken.toString());
-            onGetUserProfileClicked();
         }
 
         //        else if (AUTH_CODE_REQUEST_CODE == requestCode) {
@@ -109,7 +112,7 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
      * Get user profile
      * This method will get the user profile using the token
      */
-    public void onGetUserProfileClicked() {
+    public void getUserProfile() {
         if (mAccessToken == null) {
             Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
             return;
@@ -142,11 +145,11 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
                      Thus, I save it in a variable to prevent issues.
                      **/
 
-                    String responseBody = response.body().string();
-                    Log.i("User Profile: ", "User Profile: " + responseBody);
-                    final JSONObject jsonObject = new JSONObject(responseBody);
+                    userProfileResponse = response.body().string();
+                    Log.i("User Profile: ", "User Profile: " + userProfileResponse);
+                    final JSONObject jsonObject = new JSONObject(userProfileResponse);
                     userId = jsonObject.getString("id");
-                    onGetUserPlaylistClicked();
+                    getUserPlaylists();
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     runOnUiThread(() -> {
@@ -157,7 +160,7 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
         });
     }
 
-    public void onGetUserPlaylistClicked() {
+    public void getUserPlaylists() {
         if (mAccessToken == null) {
             Toast.makeText(this, "You need to get an access token first!", Toast.LENGTH_SHORT).show();
             return;
@@ -188,9 +191,14 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try {
-                    String responseBody = response.body().string();
-                    final JSONObject jsonObject = new JSONObject(responseBody);
-                    Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + responseBody);
+                    userPlaylistResponse = response.body().string();
+                    final JSONObject jsonObject = new JSONObject(userPlaylistResponse);
+                    Log.i("ConnectToSpotifyActivity - User Playlists: ", "User Playlists: " + userPlaylistResponse);
+                    //Redirecting to MainActivity which redirects to AccountFragment
+                    Intent intent = new Intent(ConnectToSpotifyActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish(); // Finish the current activity
 
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
@@ -210,7 +218,8 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-read-email", "user-read-private", "user-follow-read", "playlist-read-private"}) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-read-email", "user-read-private", "user-follow-read",
+                        "playlist-read-private"}) // <--- Change the scope of your requested token here
                 .setCampaign("your-campaign-token")
                 .build();
     }
@@ -235,5 +244,46 @@ public class ConnectToSpotifyActivity extends AppCompatActivity {
         cancelCall();
         AuthorizationClient.stopLoginActivity(this, AUTH_TOKEN_REQUEST_CODE); // Stop the login activity
         super.onDestroy();
+    }
+
+    @Override
+    public String fetchAccessToken() {
+        getToken();
+        return mAccessToken;
+    }
+
+    @Override
+    public void checkAndExecuteWithToken() {
+        if (isTokenValid()) {
+                // Token is valid, execute the desired action
+                executeAction();
+        } else {
+            // Token is expired or invalid, fetch a new token
+            fetchAccessToken();
+        }
+    }
+
+    private boolean isTokenValid() {
+        getUserProfile();
+        boolean invalidAccessTokenResponse = userProfileResponse.equals(InvalidAccessToken);
+        return mAccessToken != null && !mAccessToken.isEmpty() && !invalidAccessTokenResponse;
+    }
+
+    @Override
+    public void fetchUserData() {
+
+    }
+
+    @Override
+    public void fetchUserPlaylists() {
+
+    }
+
+    private void executeAction() {
+        // Implement the desired action based on the context
+        // For example:
+        // getUserData();
+        // Or
+        // fetchTopItems();
     }
 }

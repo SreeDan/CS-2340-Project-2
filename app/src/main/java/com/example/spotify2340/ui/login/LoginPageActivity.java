@@ -31,8 +31,14 @@ public class LoginPageActivity extends AppCompatActivity {
         });
 
         connectToSpotifyButton.setOnClickListener((v) -> {
-            // Redirect user to Connect To Spotify
+            // Redirect user to ConnectToSpotifyActivity
             Intent intent = new Intent(LoginPageActivity.this, ConnectToSpotifyActivity.class);
+            startActivity(intent);
+        });
+
+        logInButton.setOnClickListener((v) -> {
+            // Redirect user to LoginActivity
+            Intent intent = new Intent(LoginPageActivity.this, LoginActivity.class);
             startActivity(intent);
         });
     }

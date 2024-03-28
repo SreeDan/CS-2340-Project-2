@@ -15,7 +15,6 @@ import com.example.spotify2340.databinding.FragmentAccountBinding;
 public class AccountFragment extends Fragment {
 
     private FragmentAccountBinding binding;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         AccountViewModel accountViewModel =
